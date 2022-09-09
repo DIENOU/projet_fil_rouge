@@ -44,7 +44,7 @@ Auth::routes();
 
 
 
-Route::resource('clients', App\Http\Controllers\ClientController::class);
+Route::resource('clients', App\Http\Controllers\ClientController::class)->middleware('auth');
 
 
 Route::resource('fournisseurs', App\Http\Controllers\FournisseurController::class);
@@ -57,6 +57,20 @@ Route::resource('unites', App\Http\Controllers\UniteController::class);
 
 
 Route::resource('produits', App\Http\Controllers\ProduitController::class);
+
+
+Route::resource('inventaireLignes', App\Http\Controllers\InventaireLigneController::class);
+
+
+Route::resource('entreeStocks', App\Http\Controllers\EntreeStockController::class);
+
+
+Route::resource('bonLivraisons', App\Http\Controllers\BonLivraisonController::class);
+
+
+Route::resource('sortieStocks', App\Http\Controllers\SortieStockController::class);
+
+
 
 
 Route::resource('inventaireLignes', App\Http\Controllers\InventaireLigneController::class);

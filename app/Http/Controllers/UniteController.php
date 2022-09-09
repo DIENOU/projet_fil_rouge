@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\UniteDataTable;
+use App\Http\Requests;
 use App\Http\Requests\CreateUniteRequest;
 use App\Http\Requests\UpdateUniteRequest;
 use App\Repositories\UniteRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use App\Http\Controllers\AppBaseController;
 use Response;
+use App\Models\Unite;
 
 class UniteController extends AppBaseController
 {
@@ -23,16 +25,13 @@ class UniteController extends AppBaseController
     /**
      * Display a listing of the Unite.
      *
-     * @param Request $request
+     * @param UniteDataTable $uniteDataTable
      *
      * @return Response
      */
-    public function index(Request $request)
+    public function index(UniteDataTable $uniteDataTable)
     {
-        $unites = $this->uniteRepository->all();
-
-        return view('unites.index')
-            ->with('unites', $unites);
+        return $uniteDataTable->render('unites.index');
     }
 
     /**
@@ -55,6 +54,9 @@ class UniteController extends AppBaseController
     public function store(CreateUniteRequest $request)
     {
         $input = $request->all();
+
+ // Ajouter l'utilisateur qui a créé l'unite
+        $input['cree_par'] = Auth()->id();
 
         $unite = $this->uniteRepository->create($input);
 
@@ -121,7 +123,11 @@ class UniteController extends AppBaseController
             return redirect(route('unites.index'));
         }
 
-        $unite = $this->uniteRepository->update($request->all(), $id);
+         // Enregistrer la personne qui a modifié l'unite
+         $input = $request->all();
+         $input['modifie_par'] = Auth()->id();
+
+        $unite = $this->uniteRepository->update($input, $id);
 
         Flash::success('Unite updated successfully.');
 
@@ -132,8 +138,6 @@ class UniteController extends AppBaseController
      * Remove the specified Unite from storage.
      *
      * @param int $id
-     *
-     * @throws \Exception
      *
      * @return Response
      */

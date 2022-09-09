@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class Fournisseur
  * @package App\Models
- * @version September 1, 2022, 8:37 pm UTC
+ * @version September 3, 2022, 6:54 pm UTC
  *
  * @property string $nom
  * @property string $telephone
@@ -67,6 +67,13 @@ class Fournisseur extends Model
         'cree_par' => 'nullable',
         'modifie_par' => 'nullable'
     ];
+    
+    public function creepar() {
+        return $this->belongsTo(User::class, 'cree_par', 'id');
+    }
 
+    public function modifiePar() {
+        return $this->belongsTo(User::class, 'modifie_par', 'id');
+    }
     
 }

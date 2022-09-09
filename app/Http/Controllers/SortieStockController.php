@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\SortieStockDataTable;
+use App\Http\Requests;
 use App\Http\Requests\CreateSortieStockRequest;
 use App\Http\Requests\UpdateSortieStockRequest;
 use App\Repositories\SortieStockRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use App\Http\Controllers\AppBaseController;
 use Response;
+use App\Models\SortieStock;
 
 class SortieStockController extends AppBaseController
 {
@@ -23,16 +25,13 @@ class SortieStockController extends AppBaseController
     /**
      * Display a listing of the SortieStock.
      *
-     * @param Request $request
+     * @param SortieStockDataTable $sortieStockDataTable
      *
      * @return Response
      */
-    public function index(Request $request)
+    public function index(SortieStockDataTable $sortieStockDataTable)
     {
-        $sortieStocks = $this->sortieStockRepository->all();
-
-        return view('sortie_stocks.index')
-            ->with('sortieStocks', $sortieStocks);
+        return $sortieStockDataTable->render('sortie_stocks.index');
     }
 
     /**
@@ -55,6 +54,8 @@ class SortieStockController extends AppBaseController
     public function store(CreateSortieStockRequest $request)
     {
         $input = $request->all();
+        // Ajouter l'utilisateur qui a créé la sortiestock
+        $input['cree_par'] = Auth()->id();
 
         $sortieStock = $this->sortieStockRepository->create($input);
 
@@ -119,9 +120,12 @@ class SortieStockController extends AppBaseController
             Flash::error('Sortie Stock not found');
 
             return redirect(route('sortieStocks.index'));
+            // Enregistrer la personne qui a modifie la sortiestock
+         $input = $request->all();
+         $input['modifie_par'] = Auth()->id();
         }
 
-        $sortieStock = $this->sortieStockRepository->update($request->all(), $id);
+        $sortieStock = $this->sortieStockRepository->update($input, $id);
 
         Flash::success('Sortie Stock updated successfully.');
 
@@ -132,8 +136,6 @@ class SortieStockController extends AppBaseController
      * Remove the specified SortieStock from storage.
      *
      * @param int $id
-     *
-     * @throws \Exception
      *
      * @return Response
      */

@@ -8,7 +8,7 @@ use App\Repositories\BaseRepository;
 /**
  * Class InventaireLigneRepository
  * @package App\Repositories
- * @version September 1, 2022, 8:40 pm UTC
+ * @version September 3, 2022, 6:26 pm UTC
 */
 
 class InventaireLigneRepository extends BaseRepository

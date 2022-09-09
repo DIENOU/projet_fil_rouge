@@ -22,17 +22,19 @@
     <p>{{ $client->entreprise }}</p>
 </div>
 
+<!-- DEBUT -->
 <!-- Cree Par Field -->
 <div class="col-sm-12">
     {!! Form::label('cree_par', 'Cree Par:') !!}
-    <p>{{ $client->cree_par }}</p>
+    <p>{{ optional($client->creepar)->name }}</p>
 </div>
 
 <!-- Modifie Par Field -->
 <div class="col-sm-12">
     {!! Form::label('modifie_par', 'Modifie Par:') !!}
-    <p>{{ $client->modifie_par }}</p>
+    <p>{{ optional($client->modifiePar)->name }}</p>
 </div>
+<!-- FIN -->
 
 <!-- Created At Field -->
 <div class="col-sm-12">

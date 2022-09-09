@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class Client
  * @package App\Models
- * @version September 1, 2022, 9:21 pm UTC
+ * @version September 3, 2022, 5:06 pm UTC
  *
  * @property string $nom
  * @property string $telephone
@@ -23,6 +23,7 @@ class Client extends Model
     use SoftDeletes;
 
     use HasFactory;
+   
 
     public $table = 'clients';
     
@@ -68,5 +69,13 @@ class Client extends Model
         'modifie_par' => 'nullable'
     ];
 
-    
+    // DEBUT CREE PAR
+    public function creepar() {
+        return $this->belongsTo(User::class, 'cree_par', 'id');
+    }
+
+    public function modifiePar() {
+        return $this->belongsTo(User::class, 'modifie_par', 'id');
+    }
+    // FIN CREE PAR
 }

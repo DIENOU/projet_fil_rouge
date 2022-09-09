@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\BonLivraisonDataTable;
+use App\Http\Requests;
 use App\Http\Requests\CreateBonLivraisonRequest;
 use App\Http\Requests\UpdateBonLivraisonRequest;
 use App\Repositories\BonLivraisonRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use App\Http\Controllers\AppBaseController;
 use Response;
+use App\Models\Bonlivraison;
 
 class BonLivraisonController extends AppBaseController
 {
@@ -23,16 +25,13 @@ class BonLivraisonController extends AppBaseController
     /**
      * Display a listing of the BonLivraison.
      *
-     * @param Request $request
+     * @param BonLivraisonDataTable $bonLivraisonDataTable
      *
      * @return Response
      */
-    public function index(Request $request)
+    public function index(BonLivraisonDataTable $bonLivraisonDataTable)
     {
-        $bonLivraisons = $this->bonLivraisonRepository->all();
-
-        return view('bon_livraisons.index')
-            ->with('bonLivraisons', $bonLivraisons);
+        return $bonLivraisonDataTable->render('bon_livraisons.index');
     }
 
     /**
@@ -55,6 +54,8 @@ class BonLivraisonController extends AppBaseController
     public function store(CreateBonLivraisonRequest $request)
     {
         $input = $request->all();
+        // Ajouter l'utilisateur qui a créé le bonlivraison
+        $input['cree_par'] = Auth()->id();
 
         $bonLivraison = $this->bonLivraisonRepository->create($input);
 
@@ -119,9 +120,12 @@ class BonLivraisonController extends AppBaseController
             Flash::error('Bon Livraison not found');
 
             return redirect(route('bonLivraisons.index'));
+        
         }
-
-        $bonLivraison = $this->bonLivraisonRepository->update($request->all(), $id);
+ // Enregistrer la personne qui a modifié le bonlivraison
+        
+ $input['modifie_par'] = Auth()->id();
+        $bonLivraison = $this->bonLivraisonRepository->update($inpit, $id);
 
         Flash::success('Bon Livraison updated successfully.');
 
@@ -132,8 +136,6 @@ class BonLivraisonController extends AppBaseController
      * Remove the specified BonLivraison from storage.
      *
      * @param int $id
-     *
-     * @throws \Exception
      *
      * @return Response
      */

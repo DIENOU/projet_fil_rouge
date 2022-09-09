@@ -1,14 +1,14 @@
 <!-- Fournisseur Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('fournisseur_id', 'Fournisseur Id:') !!}
-    {!! Form::select('fournisseur_id', ], null, ['class' => 'form-control custom-select']) !!}
+    {!! Form::select('fournisseur_id', [''], null, ['class' => 'form-control custom-select']) !!}
 </div>
 
 
 <!-- Produit Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('produit_id', 'Produit Id:') !!}
-    {!! Form::select('produit_id', ], null, ['class' => 'form-control custom-select']) !!}
+    {!! Form::select('produit_id', [''], null, ['class' => 'form-control custom-select']) !!}
 </div>
 
 

@@ -31,5 +31,5 @@
 <!-- Unite Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('unite_id', 'Unite Id:') !!}
-    {!! Form::select('unite_id', ], null, ['class' => 'form-control custom-select']) !!}
+    {!! Form::select('unite_id', $unites, null, ['class' => 'form-control custom-select']) !!}
 </div>

@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\FournisseurDataTable;
+use App\Http\Requests;
 use App\Http\Requests\CreateFournisseurRequest;
 use App\Http\Requests\UpdateFournisseurRequest;
 use App\Repositories\FournisseurRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use App\Http\Controllers\AppBaseController;
 use Response;
+use App\Models\Fournisseur;
 
 class FournisseurController extends AppBaseController
 {
@@ -23,16 +25,13 @@ class FournisseurController extends AppBaseController
     /**
      * Display a listing of the Fournisseur.
      *
-     * @param Request $request
+     * @param FournisseurDataTable $fournisseurDataTable
      *
      * @return Response
      */
-    public function index(Request $request)
+    public function index(FournisseurDataTable $fournisseurDataTable)
     {
-        $fournisseurs = $this->fournisseurRepository->all();
-
-        return view('fournisseurs.index')
-            ->with('fournisseurs', $fournisseurs);
+        return $fournisseurDataTable->render('fournisseurs.index');
     }
 
     /**
@@ -51,10 +50,15 @@ class FournisseurController extends AppBaseController
      * @param CreateFournisseurRequest $request
      *
      * @return Response
+     * 
      */
+    
     public function store(CreateFournisseurRequest $request)
     {
         $input = $request->all();
+
+        // Ajouter l'utilisateur qui a créé le fournisseur
+        $input['cree_par'] = Auth()->id();
 
         $fournisseur = $this->fournisseurRepository->create($input);
 
@@ -120,8 +124,12 @@ class FournisseurController extends AppBaseController
 
             return redirect(route('fournisseurs.index'));
         }
+           // Enregistrer la personne qui a modifié le  fournisseur
+           $input = $request->all();
+           $input['modifie_par'] = Auth()->id();
+   
 
-        $fournisseur = $this->fournisseurRepository->update($request->all(), $id);
+        $fournisseur = $this->fournisseurRepository->update($input, $id);
 
         Flash::success('Fournisseur updated successfully.');
 
@@ -132,8 +140,6 @@ class FournisseurController extends AppBaseController
      * Remove the specified Fournisseur from storage.
      *
      * @param int $id
-     *
-     * @throws \Exception
      *
      * @return Response
      */

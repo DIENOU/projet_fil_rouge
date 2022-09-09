@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class Produit
  * @package App\Models
- * @version September 1, 2022, 9:24 pm UTC
+ * @version September 3, 2022, 6:22 pm UTC
  *
  * @property string $code_produit
  * @property string $designation
@@ -75,6 +75,12 @@ class Produit extends Model
         'cree_par' => 'nullable',
         'modifie_par' => 'nullable'
     ];
+    public function creepar() {
+        return $this->belongsTo(User::class, 'cree_par', 'id');
+    }
 
+    public function modifiePar() {
+        return $this->belongsTo(User::class, 'modifie_par', 'id');
+    }
     
 }

@@ -8,7 +8,7 @@ use App\Repositories\BaseRepository;
 /**
  * Class BonLivraisonRepository
  * @package App\Repositories
- * @version September 1, 2022, 8:42 pm UTC
+ * @version September 3, 2022, 6:33 pm UTC
 */
 
 class BonLivraisonRepository extends BaseRepository
@@ -19,7 +19,8 @@ class BonLivraisonRepository extends BaseRepository
     protected $fieldSearchable = [
         'numero_bon_livraison',
         'etat',
-        'projet'
+        'projet',
+        'client_id'
     ];
 
     /**

@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\InventaireLigneDataTable;
+use App\Http\Requests;
 use App\Http\Requests\CreateInventaireLigneRequest;
 use App\Http\Requests\UpdateInventaireLigneRequest;
 use App\Repositories\InventaireLigneRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use App\Http\Controllers\AppBaseController;
 use Response;
-
+use App\Models\InventaireLigne;
 class InventaireLigneController extends AppBaseController
 {
     /** @var InventaireLigneRepository $inventaireLigneRepository*/
@@ -23,16 +24,13 @@ class InventaireLigneController extends AppBaseController
     /**
      * Display a listing of the InventaireLigne.
      *
-     * @param Request $request
+     * @param InventaireLigneDataTable $inventaireLigneDataTable
      *
      * @return Response
      */
-    public function index(Request $request)
+    public function index(InventaireLigneDataTable $inventaireLigneDataTable)
     {
-        $inventaireLignes = $this->inventaireLigneRepository->all();
-
-        return view('inventaire_lignes.index')
-            ->with('inventaireLignes', $inventaireLignes);
+        return $inventaireLigneDataTable->render('inventaire_lignes.index');
     }
 
     /**
@@ -54,6 +52,8 @@ class InventaireLigneController extends AppBaseController
      */
     public function store(CreateInventaireLigneRequest $request)
     {
+         // Ajouter l'utilisateur qui a créé l'inventaireligne
+     $input['cree_par'] = Auth()->id();
         $input = $request->all();
 
         $inventaireLigne = $this->inventaireLigneRepository->create($input);
@@ -120,8 +120,10 @@ class InventaireLigneController extends AppBaseController
 
             return redirect(route('inventaireLignes.index'));
         }
-
-        $inventaireLigne = $this->inventaireLigneRepository->update($request->all(), $id);
+// Enregistrer la personne qui a modifié l'inventaireligne
+          $input = $request->all();
+         $input['modifie_par'] = Auth()->id();
+        $inventaireLigne = $this->inventaireLigneRepository->update($input, $id);
 
         Flash::success('Inventaire Ligne updated successfully.');
 
@@ -132,8 +134,6 @@ class InventaireLigneController extends AppBaseController
      * Remove the specified InventaireLigne from storage.
      *
      * @param int $id
-     *
-     * @throws \Exception
      *
      * @return Response
      */

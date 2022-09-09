@@ -31,13 +31,13 @@
 <!-- Cree Par Field -->
 <div class="col-sm-12">
     {!! Form::label('cree_par', 'Cree Par:') !!}
-    <p>{{ $sortieStock->cree_par }}</p>
+    <p>{{  optional($sortieStock->cree_par)->name  }}</p>
 </div>
 
 <!-- Modifie Par Field -->
 <div class="col-sm-12">
     {!! Form::label('modifie_par', 'Modifie Par:') !!}
-    <p>{{ $sortieStock->modifie_par }}</p>
+    <p>{{  optional($sortieStock->modifie_par)->name  }}</p>
 </div>
 
 <!-- Created At Field -->

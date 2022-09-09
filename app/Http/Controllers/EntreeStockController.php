@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\EntreeStockDataTable;
+use App\Http\Requests;
 use App\Http\Requests\CreateEntreeStockRequest;
 use App\Http\Requests\UpdateEntreeStockRequest;
 use App\Repositories\EntreeStockRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use App\Http\Controllers\AppBaseController;
 use Response;
+use App\Models\EntreeStock;
 
 class EntreeStockController extends AppBaseController
 {
@@ -23,16 +25,13 @@ class EntreeStockController extends AppBaseController
     /**
      * Display a listing of the EntreeStock.
      *
-     * @param Request $request
+     * @param EntreeStockDataTable $entreeStockDataTable
      *
      * @return Response
      */
-    public function index(Request $request)
+    public function index(EntreeStockDataTable $entreeStockDataTable)
     {
-        $entreeStocks = $this->entreeStockRepository->all();
-
-        return view('entree_stocks.index')
-            ->with('entreeStocks', $entreeStocks);
+        return $entreeStockDataTable->render('entree_stocks.index');
     }
 
     /**
@@ -55,6 +54,9 @@ class EntreeStockController extends AppBaseController
     public function store(CreateEntreeStockRequest $request)
     {
         $input = $request->all();
+          // Ajouter l'utilisateur qui a créé l'entreestock
+     $input['cree_par'] = Auth()->id();
+
 
         $entreeStock = $this->entreeStockRepository->create($input);
 
@@ -120,8 +122,11 @@ class EntreeStockController extends AppBaseController
 
             return redirect(route('entreeStocks.index'));
         }
+         // Enregistrer la personne qui a modifié l'entreesttock
+        
+         $input['modifie_par'] = Auth()->id();
 
-        $entreeStock = $this->entreeStockRepository->update($request->all(), $id);
+        $entreeStock = $this->entreeStockRepository->update($input, $id);
 
         Flash::success('Entree Stock updated successfully.');
 
@@ -132,8 +137,6 @@ class EntreeStockController extends AppBaseController
      * Remove the specified EntreeStock from storage.
      *
      * @param int $id
-     *
-     * @throws \Exception
      *
      * @return Response
      */

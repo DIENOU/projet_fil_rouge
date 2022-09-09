@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\ClientDataTable;
+use App\Http\Requests;
 use App\Http\Requests\CreateClientRequest;
 use App\Http\Requests\UpdateClientRequest;
 use App\Repositories\ClientRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use App\Http\Controllers\AppBaseController;
 use Response;
+use App\Models\Client;
 
 class ClientController extends AppBaseController
 {
@@ -23,16 +25,13 @@ class ClientController extends AppBaseController
     /**
      * Display a listing of the Client.
      *
-     * @param Request $request
+     * @param ClientDataTable $clientDataTable
      *
      * @return Response
      */
-    public function index(Request $request)
+    public function index(ClientDataTable $clientDataTable)
     {
-        $clients = $this->clientRepository->all();
-
-        return view('clients.index')
-            ->with('clients', $clients);
+        return $clientDataTable->render('clients.index');
     }
 
     /**
@@ -56,6 +55,9 @@ class ClientController extends AppBaseController
     {
         $input = $request->all();
 
+        // Ajouter l'utilisateur qui a créé le client
+        $input['cree_par'] = Auth()->id();
+
         $client = $this->clientRepository->create($input);
 
         Flash::success('Client saved successfully.');
@@ -73,6 +75,8 @@ class ClientController extends AppBaseController
     public function show($id)
     {
         $client = $this->clientRepository->find($id);
+
+        //dd($client->creepar);
 
         if (empty($client)) {
             Flash::error('Client not found');
@@ -121,7 +125,11 @@ class ClientController extends AppBaseController
             return redirect(route('clients.index'));
         }
 
-        $client = $this->clientRepository->update($request->all(), $id);
+        // Enregistrer la personne qui a modifié le client
+        $input = $request->all();
+        $input['modifie_par'] = Auth()->id();
+
+        $client = $this->clientRepository->update($input, $id);
 
         Flash::success('Client updated successfully.');
 
@@ -132,8 +140,6 @@ class ClientController extends AppBaseController
      * Remove the specified Client from storage.
      *
      * @param int $id
-     *
-     * @throws \Exception
      *
      * @return Response
      */
