@@ -8,7 +8,7 @@ use App\Repositories\BaseRepository;
 /**
  * Class EntreeStockRepository
  * @package App\Repositories
- * @version September 1, 2022, 8:41 pm UTC
+ * @version September 3, 2022, 6:30 pm UTC
 */
 
 class EntreeStockRepository extends BaseRepository

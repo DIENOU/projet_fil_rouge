@@ -8,7 +8,7 @@ use App\Repositories\BaseRepository;
 /**
  * Class UniteRepository
  * @package App\Repositories
- * @version September 1, 2022, 8:38 pm UTC
+ * @version September 3, 2022, 6:20 pm UTC
 */
 
 class UniteRepository extends BaseRepository

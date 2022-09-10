@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\ProduitDataTable;
+use App\Http\Requests;
 use App\Http\Requests\CreateProduitRequest;
 use App\Http\Requests\UpdateProduitRequest;
 use App\Repositories\ProduitRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use App\Http\Controllers\AppBaseController;
 use Response;
+use App\Models\Produit;
+use App\Models\Unite;
 
 class ProduitController extends AppBaseController
 {
@@ -23,16 +26,13 @@ class ProduitController extends AppBaseController
     /**
      * Display a listing of the Produit.
      *
-     * @param Request $request
+     * @param ProduitDataTable $produitDataTable
      *
      * @return Response
      */
-    public function index(Request $request)
+    public function index(ProduitDataTable $produitDataTable)
     {
-        $produits = $this->produitRepository->all();
-
-        return view('produits.index')
-            ->with('produits', $produits);
+        return $produitDataTable->render('produits.index');
     }
 
     /**
@@ -42,7 +42,9 @@ class ProduitController extends AppBaseController
      */
     public function create()
     {
-        return view('produits.create');
+        $unites = Unite::pluck('nom', 'id');
+
+        return view('produits.create', compact('unites'));
     }
 
     /**
@@ -55,6 +57,8 @@ class ProduitController extends AppBaseController
     public function store(CreateProduitRequest $request)
     {
         $input = $request->all();
+        // Ajouter l'utilisateur qui a créé le produit
+        $input['cree_par'] = Auth()->id();
 
         $produit = $this->produitRepository->create($input);
 
@@ -100,7 +104,9 @@ class ProduitController extends AppBaseController
             return redirect(route('produits.index'));
         }
 
-        return view('produits.edit')->with('produit', $produit);
+        $unites = Unite::pluck('nom', 'id');
+
+        return view('produits.edit', compact('unites'))->with('produit', $produit);
     }
 
     /**
@@ -121,7 +127,11 @@ class ProduitController extends AppBaseController
             return redirect(route('produits.index'));
         }
 
-        $produit = $this->produitRepository->update($request->all(), $id);
+        // Enregistrer la personne qui a modifie le produit
+        $input = $request->all();
+        $input['modifie_par'] = Auth()->id();
+
+        $produit = $this->produitRepository->update($input, $id);
 
         Flash::success('Produit updated successfully.');
 
@@ -132,8 +142,6 @@ class ProduitController extends AppBaseController
      * Remove the specified Produit from storage.
      *
      * @param int $id
-     *
-     * @throws \Exception
      *
      * @return Response
      */

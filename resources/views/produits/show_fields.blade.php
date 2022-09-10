@@ -31,19 +31,19 @@
 <!-- Unite Id Field -->
 <div class="col-sm-12">
     {!! Form::label('unite_id', 'Unite Id:') !!}
-    <p>{{ $produit->unite_id }}</p>
+    <p>{{ optional($produit->unite)->nom }}</p>
 </div>
 
 <!-- Cree Par Field -->
 <div class="col-sm-12">
     {!! Form::label('cree_par', 'Cree Par:') !!}
-    <p>{{ $produit->cree_par }}</p>
+    <p>{{ optional($produit->creepar)->name }}</p>
 </div>
 
 <!-- Modifie Par Field -->
 <div class="col-sm-12">
     {!! Form::label('modifie_par', 'Modifie Par:') !!}
-    <p>{{ $produit->modifie_par }}</p>
+    <p>{{ optional($produit->modifiePar)->name }}</p>
 </div>
 
 <!-- Created At Field -->
@@ -57,4 +57,3 @@
     {!! Form::label('updated_at', 'Updated At:') !!}
     <p>{{ $produit->updated_at }}</p>
 </div>
-

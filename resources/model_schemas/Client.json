@@ -67,7 +67,7 @@
         "searchable": true,
         "fillable": true,
         "primary": false,
-        "inForm": true,
+        "inForm": false,
         "inIndex": false,
         "inView": true
     },
@@ -79,7 +79,7 @@
         "searchable": true,
         "fillable": true,
         "primary": false,
-        "inForm": true,
+        "inForm": false,
         "inIndex": false,
         "inView": true
     },

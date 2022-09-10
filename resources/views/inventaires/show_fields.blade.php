@@ -7,13 +7,13 @@
 <!-- Cree Par Field -->
 <div class="col-sm-12">
     {!! Form::label('cree_par', 'Cree Par:') !!}
-    <p>{{ $inventaire->cree_par }}</p>
+    <p>{{ optional($inventaire->creepar)->name }}</p>
 </div>
 
 <!-- Modifie Par Field -->
 <div class="col-sm-12">
     {!! Form::label('modifie_par', 'Modifie Par:') !!}
-    <p>{{ $inventaire->modifie_par }}</p>
+    <p>{{ optional($inventaire->modifie_par)->name }}</p>
 </div>
 
 <!-- Created At Field -->

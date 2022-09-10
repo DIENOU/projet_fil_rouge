@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class Inventaire
  * @package App\Models
- * @version September 1, 2022, 8:38 pm UTC
+ * @version September 3, 2022, 7:00 pm UTC
  *
  * @property string $intitule
  * @property integer $cree_par
@@ -56,5 +56,14 @@ class Inventaire extends Model
         'modifie_par' => 'nullable'
     ];
 
+    public function creepar() {
+        return $this->belongsTo(User::class, 'cree_par', 'id');
+    }
+
+    public function modifiePar() {
+        return $this->belongsTo(User::class, 'modifie_par', 'id');
+    }
     
 }
+
+

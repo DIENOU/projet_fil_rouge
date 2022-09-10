@@ -16,9 +16,14 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.0",
-        "laravelcollective/html": "6.2"
+        "laravelcollective/html": "6.2",
+        "rappasoft/laravel-livewire-tables": "^2.8",
+        "yajra/laravel-datatables-buttons": "4.x",
+        "yajra/laravel-datatables-html": "4.x",
+        "yajra/laravel-datatables-oracle": "9.x"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.7",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",

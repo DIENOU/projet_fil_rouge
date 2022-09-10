@@ -25,13 +25,13 @@
 <!-- Cree Par Field -->
 <div class="col-sm-12">
     {!! Form::label('cree_par', 'Cree Par:') !!}
-    <p>{{ $fournisseur->cree_par }}</p>
+    <p>{{ optional($fournisseur->creepar)->name }}</p>
 </div>
 
 <!-- Modifie Par Field -->
 <div class="col-sm-12">
     {!! Form::label('modifie_par', 'Modifie Par:') !!}
-    <p>{{ $fournisseur->modifie_par }}</p>
+    <p>{{ optional($fournisseur->modifiePar)->name }}</p>
 </div>
 
 <!-- Created At Field -->

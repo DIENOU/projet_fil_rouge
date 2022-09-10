@@ -1,9 +1,20 @@
-<!-- Bon Livraison Id Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('bon_livraison_id', 'Bon Livraison Id:') !!}
-    {!! Form::select('bon_livraison_id', ], null, ['class' => 'form-control custom-select']) !!}
+<label for="">Nom produit</label>
+    <select name="produit_id" id="" class="form-control">
+        @foreach(App\Models\Produit::all() as $prod)
+        <option value="{{$prod->id}}">{{$prod->designation}}</option>
+        @endforeach
+    </select>
 </div>
 
+<div class="form-group col-sm-6">
+<label for="">Bon Livraison Id</label>
+    <select name="bon_livraison_id" id="" class="form-control">
+        @foreach(App\Models\BonLivraison::all() as $liv)
+        <option value="{{$liv->id}}">{{$liv->numero_bon_livraison}}</option>
+        @endforeach
+    </select>
+</div>
 
 <!-- Quantite Field -->
 <div class="form-group col-sm-6">

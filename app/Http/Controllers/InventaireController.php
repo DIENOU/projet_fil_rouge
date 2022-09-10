@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\InventaireDataTable;
+use App\Http\Requests;
 use App\Http\Requests\CreateInventaireRequest;
 use App\Http\Requests\UpdateInventaireRequest;
 use App\Repositories\InventaireRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use App\Http\Controllers\AppBaseController;
 use Response;
+use App\Models\Inventaire;
 
 class InventaireController extends AppBaseController
 {
@@ -23,16 +25,13 @@ class InventaireController extends AppBaseController
     /**
      * Display a listing of the Inventaire.
      *
-     * @param Request $request
+     * @param InventaireDataTable $inventaireDataTable
      *
      * @return Response
      */
-    public function index(Request $request)
+    public function index(InventaireDataTable $inventaireDataTable)
     {
-        $inventaires = $this->inventaireRepository->all();
-
-        return view('inventaires.index')
-            ->with('inventaires', $inventaires);
+        return $inventaireDataTable->render('inventaires.index');
     }
 
     /**
@@ -55,6 +54,9 @@ class InventaireController extends AppBaseController
     public function store(CreateInventaireRequest $request)
     {
         $input = $request->all();
+
+          // Ajouter l'utilisateur qui a créé l'inventaire
+          $input['cree_par'] = Auth()->id();
 
         $inventaire = $this->inventaireRepository->create($input);
 
@@ -120,8 +122,11 @@ class InventaireController extends AppBaseController
 
             return redirect(route('inventaires.index'));
         }
+       // Enregistrer la personne qui a modifié l'inventaire
+           $input = $request->all();
+                   $input['modifie_par'] = Auth()->id();
 
-        $inventaire = $this->inventaireRepository->update($request->all(), $id);
+        $inventaire = $this->inventaireRepository->update($input, $id);
 
         Flash::success('Inventaire updated successfully.');
 
@@ -132,8 +137,6 @@ class InventaireController extends AppBaseController
      * Remove the specified Inventaire from storage.
      *
      * @param int $id
-     *
-     * @throws \Exception
      *
      * @return Response
      */

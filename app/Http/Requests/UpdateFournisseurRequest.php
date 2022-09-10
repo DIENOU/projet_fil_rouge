@@ -25,7 +25,7 @@ class UpdateFournisseurRequest extends FormRequest
     public function rules()
     {
         $rules = Fournisseur::$rules;
-        $rules['email'] = $rules['email'].",".$this->route("fournisseur");
+        $rules['email'] = $rules['email'].",email,".$this->route("fournisseur");
         return $rules;
     }
 }

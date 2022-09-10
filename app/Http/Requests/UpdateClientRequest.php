@@ -25,7 +25,9 @@ class UpdateClientRequest extends FormRequest
     public function rules()
     {
         $rules = Client::$rules;
-        $rules['telephone'] = $rules['telephone'].",".$this->route("client");
+        //dd($rules);
+        $rules['telephone'] = $rules['telephone'].",telephone,".$this->route("client");
+        //dd($rules);
         return $rules;
     }
 }

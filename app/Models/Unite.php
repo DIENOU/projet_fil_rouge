@@ -5,11 +5,12 @@ namespace App\Models;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
 
 /**
  * Class Unite
  * @package App\Models
- * @version September 1, 2022, 8:38 pm UTC
+ * @version September 3, 2022, 6:20 pm UTC
  *
  * @property string $nom
  * @property integer $unite_de_base_id
@@ -64,5 +65,12 @@ class Unite extends Model
         'modifie_par' => 'nullable'
     ];
 
+    public function creepar() {
+        return $this->belongsTo(User::class, 'cree_par', 'id');
+    }
+
+    public function modifiePar() {
+        return $this->belongsTo(User::class, 'modifie_par', 'id');
+    }
     
 }

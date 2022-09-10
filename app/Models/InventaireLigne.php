@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class InventaireLigne
  * @package App\Models
- * @version September 1, 2022, 8:40 pm UTC
+ * @version September 3, 2022, 6:26 pm UTC
  *
  * @property integer $produit_id
  * @property integer $inventaire_id
@@ -67,6 +67,12 @@ class InventaireLigne extends Model
         'cree_par' => 'nullable',
         'modifie_par' => 'nullable'
     ];
+    public function creepar() {
+        return $this->belongsTo(User::class, 'cree_par', 'id');
+    }
 
+    public function modifiePar() {
+        return $this->belongsTo(User::class, 'modifie_par', 'id');
+    }
     
 }

@@ -5,11 +5,12 @@ namespace App\Models;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
+use Illuminate\Database\Eloquent\Factories\CreeParFactory;
+use Illuminate\Database\Eloquent\Factories\ModifieParFactory;
 /**
  * Class BonLivraison
  * @package App\Models
- * @version September 1, 2022, 8:42 pm UTC
+ * @version September 3, 2022, 6:33 pm UTC
  *
  * @property string $numero_bon_livraison
  * @property integer $client_id
@@ -67,6 +68,12 @@ class BonLivraison extends Model
         'cree_par' => 'nullable',
         'modifie_par' => 'nullable'
     ];
+    public function creepar() {
+        return $this->belongsTo(User::class, 'cree_par', 'id');
+    }
 
+    public function modifiePar() {
+        return $this->belongsTo(User::class, 'modifie_par', 'id');
+    }
     
 }

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class SortieStock
  * @package App\Models
- * @version September 1, 2022, 8:43 pm UTC
+ * @version September 3, 2022, 6:35 pm UTC
  *
  * @property integer $bon_livraison_id
  * @property integer $produit_id
@@ -72,5 +72,11 @@ class SortieStock extends Model
         'modifie_par' => 'nullable'
     ];
 
-    
+    public function creepar() {
+        return $this->belongsTo(User::class, 'cree_par', 'id');
+    }
+
+    public function modifiePar() {
+        return $this->belongsTo(User::class, 'modifie_par', 'id');
+    }
 }
