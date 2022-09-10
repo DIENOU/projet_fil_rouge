@@ -6,14 +6,6 @@
     </a>
 </li>
 
-{{-- <li class="nav-item">
-    <a href="{{ route('inventaireLignes.index') }}"
-        class="nav-link {{ Request::is('inventaireLignes*') ? 'active' : '' }}">
-        <i class="nav-icon fas fa-home"></i>
-        <p>Inventaire Lignes</p>
-    </a>
-</li> --}}
-
 
 <li class="nav-item">
     <a href="{{ route('bonLivraisons.index') }}" class="nav-link {{ Request::is('bonLivraisons*') ? 'active' : '' }}">
@@ -38,19 +30,29 @@
     </a>
 </li>
 
-
-<li class="nav-item">
-    <a href="{{ route('produits.index') }}" class="nav-link {{ Request::is('produits*') ? 'active' : '' }}">
-        <i class="nav-icon fas fa-box"></i>
-        <p>Produits</p>
-    </a>
-</li>
+@can('afficher produits')
+    <li class="nav-item">
+        <a href="{{ route('produits.index') }}" class="nav-link {{ Request::is('produits*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-box"></i>
+            <p>Produits</p>
+        </a>
+    </li>
+@endcan
 
 
 <li class="nav-item">
     <a href="{{ route('inventaires.index') }}" class="nav-link {{ Request::is('inventaires*') ? 'active' : '' }}">
         <i class="nav-icon fas fa-check"></i>
         <p>Inventaires</p>
+    </a>
+</li>
+
+
+<li class="nav-item">
+    <a href="{{ route('inventaireLignes.index') }}"
+        class="nav-link {{ Request::is('inventaireLignes*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-check"></i>
+        <p>Inventaire Lignes</p>
     </a>
 </li>
 
@@ -75,5 +77,27 @@
     <a href="{{ route('unites.index') }}" class="nav-link {{ Request::is('unites*') ? 'active' : '' }}">
         <i class="nav-icon fas fa-ruler"></i>
         <p>Unites</p>
+    </a>
+</li>
+
+
+<li class="nav-item">
+    <a href="{{ route('users.index') }}" class="nav-link {{ Request::is('users*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-users"></i>
+        <p>Users</p>
+    </a>
+</li>
+
+<li class="nav-item">
+    <a href="{{ route('roles.index') }}" class="nav-link {{ Request::is('roles*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-lock"></i>
+        <p>Roles</p>
+    </a>
+</li>
+
+<li class="nav-item">
+    <a href="{{ route('permissions.index') }}" class="nav-link {{ Request::is('permissions*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-lock"></i>
+        <p>Permissions</p>
     </a>
 </li>

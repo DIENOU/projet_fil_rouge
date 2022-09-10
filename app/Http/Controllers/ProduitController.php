@@ -12,6 +12,7 @@ use App\Http\Controllers\AppBaseController;
 use Response;
 use App\Models\Produit;
 use App\Models\Unite;
+use Illuminate\Support\Facades\Gate;
 
 class ProduitController extends AppBaseController
 {
@@ -32,6 +33,9 @@ class ProduitController extends AppBaseController
      */
     public function index(ProduitDataTable $produitDataTable)
     {
+        // Si l'utilisateur n'a pas cette permissions, on l'interdit l'accès
+        abort_if(!Gate::allows('afficher produits'), 403, "Vous n'avez pas la permission d'accéder à cette fonctionnalité");
+
         return $produitDataTable->render('produits.index');
     }
 
@@ -42,6 +46,9 @@ class ProduitController extends AppBaseController
      */
     public function create()
     {
+        // Si l'utilisateur n'a pas cette permissions, on l'interdit l'accès
+        abort_if(!Gate::allows('ajouter produits'), 403, "Vous n'avez pas la permission d'accéder à cette fonctionnalité");
+
         $unites = Unite::pluck('nom', 'id');
 
         return view('produits.create', compact('unites'));
@@ -56,6 +63,9 @@ class ProduitController extends AppBaseController
      */
     public function store(CreateProduitRequest $request)
     {
+        // Si l'utilisateur n'a pas cette permissions, on l'interdit l'accès
+        abort_if(!Gate::allows('ajouter produits'), 403, "Vous n'avez pas la permission d'accéder à cette fonctionnalité");
+
         $input = $request->all();
         // Ajouter l'utilisateur qui a créé le produit
         $input['cree_par'] = Auth()->id();
@@ -76,6 +86,9 @@ class ProduitController extends AppBaseController
      */
     public function show($id)
     {
+        // Si l'utilisateur n'a pas cette permissions, on l'interdit l'accès
+        abort_if(!Gate::allows('afficher produits'), 403, "Vous n'avez pas la permission d'accéder à cette fonctionnalité");
+
         $produit = $this->produitRepository->find($id);
 
         if (empty($produit)) {
@@ -96,6 +109,9 @@ class ProduitController extends AppBaseController
      */
     public function edit($id)
     {
+        // Si l'utilisateur n'a pas cette permissions, on l'interdit l'accès
+        abort_if(!Gate::allows('modifier produits'), 403, "Vous n'avez pas la permission d'accéder à cette fonctionnalité");
+
         $produit = $this->produitRepository->find($id);
 
         if (empty($produit)) {
@@ -119,6 +135,9 @@ class ProduitController extends AppBaseController
      */
     public function update($id, UpdateProduitRequest $request)
     {
+        // Si l'utilisateur n'a pas cette permissions, on l'interdit l'accès
+        abort_if(!Gate::allows('modifier produits'), 403, "Vous n'avez pas la permission d'accéder à cette fonctionnalité");
+
         $produit = $this->produitRepository->find($id);
 
         if (empty($produit)) {
@@ -147,6 +166,9 @@ class ProduitController extends AppBaseController
      */
     public function destroy($id)
     {
+        // Si l'utilisateur n'a pas cette permissions, on l'interdit l'accès
+        abort_if(!Gate::allows('supprimer produits'), 403, "Vous n'avez pas la permission d'accéder à cette fonctionnalité");
+
         $produit = $this->produitRepository->find($id);
 
         if (empty($produit)) {

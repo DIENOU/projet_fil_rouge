@@ -26,7 +26,7 @@ class EntreeStock extends Model
     use HasFactory;
 
     public $table = 'entree_stocks';
-    
+
 
     protected $dates = ['deleted_at'];
 
@@ -65,18 +65,20 @@ class EntreeStock extends Model
     public static $rules = [
         'fournisseur_id' => 'nullable',
         'produit_id' => 'required',
-        'numero_lot' => 'required|max:200',
+        'numero_lot' => 'nullable|max:200',
         'quantite' => 'required',
-        'prix_unitaire' => 'required',
+        'prix_unitaire' => 'nullable',
         'cree_par' => 'nullable',
         'modifie_par' => 'nullable'
     ];
 
-    public function creepar() {
+    public function creepar()
+    {
         return $this->belongsTo(User::class, 'cree_par', 'id');
     }
 
-    public function modifiePar() {
+    public function modifiePar()
+    {
         return $this->belongsTo(User::class, 'modifie_par', 'id');
-    }   
+    }
 }

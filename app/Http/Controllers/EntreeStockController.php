@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\EntreeStockDataTable;
+use Flash;
+use Response;
 use App\Http\Requests;
+use App\Models\Produit;
+use App\Models\EntreeStock;
+use App\DataTables\EntreeStockDataTable;
+use App\Http\Controllers\AppBaseController;
+use App\Repositories\EntreeStockRepository;
 use App\Http\Requests\CreateEntreeStockRequest;
 use App\Http\Requests\UpdateEntreeStockRequest;
-use App\Repositories\EntreeStockRepository;
-use Flash;
-use App\Http\Controllers\AppBaseController;
-use Response;
-use App\Models\EntreeStock;
+use App\Models\Fournisseur;
 
 class EntreeStockController extends AppBaseController
 {
@@ -41,7 +43,10 @@ class EntreeStockController extends AppBaseController
      */
     public function create()
     {
-        return view('entree_stocks.create');
+        $produits = Produit::select('id', 'code_produit', 'designation', 'quantite')->get();
+        $fournisseurs = Fournisseur::all();
+
+        return view('entree_stocks.create', compact('produits', 'fournisseurs'));
     }
 
     /**
@@ -58,6 +63,10 @@ class EntreeStockController extends AppBaseController
         $input['cree_par'] = Auth()->id();
 
         $entreeStock = $this->entreeStockRepository->create($input);
+
+        $produit = Produit::findOrFail($entreeStock->produit_id);
+        $produit->quantite = $produit->quantite + $entreeStock->quantite;
+        $produit->save();
 
         Flash::success('Entree Stock saved successfully.');
 
@@ -101,7 +110,13 @@ class EntreeStockController extends AppBaseController
             return redirect(route('entreeStocks.index'));
         }
 
-        return view('entree_stocks.edit')->with('entreeStock', $entreeStock);
+        $produits = Produit::select('id', 'code_produit', 'designation', 'quantite')->get();
+        $fournisseurs = Fournisseur::all();
+
+        return view('entree_stocks.edit')
+            ->with('entreeStock', $entreeStock)
+            ->with('produits', $produits)
+            ->with('fournisseurs', $fournisseurs);
     }
 
     /**
@@ -116,6 +131,9 @@ class EntreeStockController extends AppBaseController
     {
         $entreeStock = $this->entreeStockRepository->find($id);
 
+        $quantiteAncien = $entreeStock->quantite;
+        $produitAncien = Produit::findOrFail($entreeStock->produit_id);
+
         if (empty($entreeStock)) {
             Flash::error('Entree Stock not found');
 
@@ -125,7 +143,15 @@ class EntreeStockController extends AppBaseController
         $input = $request->all();
         $input['modifie_par'] = Auth()->id();
 
+        $produitNouveau = Produit::findOrFail($input['produit_id']);
+
         $entreeStock = $this->entreeStockRepository->update($input, $id);
+
+        // Gestion des quantités du produit
+        $produitAncien->quantite  = $produitAncien->quantite - $quantiteAncien;
+        $produitAncien->save();
+        $produitNouveau->quantite  = $produitNouveau->quantite + $entreeStock->quantite;
+        $produitNouveau->save();
 
         Flash::success('Entree Stock updated successfully.');
 

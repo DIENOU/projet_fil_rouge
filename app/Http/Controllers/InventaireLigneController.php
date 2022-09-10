@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\InventaireLigneDataTable;
+use Flash;
+use Response;
 use App\Http\Requests;
+use App\Models\Produit;
+use App\Models\InventaireLigne;
+use App\Http\Controllers\AppBaseController;
+use App\DataTables\InventaireLigneDataTable;
+use App\Repositories\InventaireLigneRepository;
 use App\Http\Requests\CreateInventaireLigneRequest;
 use App\Http\Requests\UpdateInventaireLigneRequest;
-use App\Repositories\InventaireLigneRepository;
-use Flash;
-use App\Http\Controllers\AppBaseController;
-use Response;
-use App\Models\InventaireLigne;
+use App\Models\Inventaire;
 
 class InventaireLigneController extends AppBaseController
 {
@@ -41,7 +43,10 @@ class InventaireLigneController extends AppBaseController
      */
     public function create()
     {
-        return view('inventaire_lignes.create');
+        $produits = Produit::select('id', 'code_produit', 'designation', 'quantite')->get();
+        $inventaires = Inventaire::all();
+
+        return view('inventaire_lignes.create', compact('produits', 'inventaires'));
     }
 
     /**
@@ -56,6 +61,9 @@ class InventaireLigneController extends AppBaseController
         // Ajouter l'utilisateur qui a créé l'inventaireligne
         $input = $request->all();
         $input['cree_par'] = Auth()->id();
+
+        $produit = Produit::findOrFail($input['produit_id']);
+        $input['quantite_restant'] = $produit->quantite;
 
         $inventaireLigne = $this->inventaireLigneRepository->create($input);
 
@@ -101,7 +109,14 @@ class InventaireLigneController extends AppBaseController
             return redirect(route('inventaireLignes.index'));
         }
 
-        return view('inventaire_lignes.edit')->with('inventaireLigne', $inventaireLigne);
+
+        $produits = Produit::select('id', 'code_produit', 'designation', 'quantite')->get();
+        $inventaires = Inventaire::all();
+
+        return view('inventaire_lignes.edit')
+            ->with('inventaireLigne', $inventaireLigne)
+            ->with('produits', $produits)
+            ->with('inventaires', $inventaires);
     }
 
     /**
@@ -124,6 +139,10 @@ class InventaireLigneController extends AppBaseController
         // Enregistrer la personne qui a modifié l'inventaireligne
         $input = $request->all();
         $input['modifie_par'] = Auth()->id();
+
+        $produit = Produit::findOrFail($input['produit_id']);
+        $input['quantite_restant'] = $produit->quantite;
+
         $inventaireLigne = $this->inventaireLigneRepository->update($input, $id);
 
         Flash::success('Inventaire Ligne updated successfully.');

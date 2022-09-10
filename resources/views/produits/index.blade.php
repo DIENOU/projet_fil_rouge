@@ -8,10 +8,11 @@
                     <h1>Produits</h1>
                 </div>
                 <div class="col-sm-6">
-                    <a class="btn btn-primary float-right"
-                       href="{{ route('produits.create') }}">
-                        Add New
-                    </a>
+                    @can('ajouter produits')
+                        <a class="btn btn-primary float-right" href="{{ route('produits.create') }}">
+                            Add New
+                        </a>
+                    @endcan
                 </div>
             </div>
         </div>
@@ -29,13 +30,11 @@
 
                 <div class="card-footer clearfix">
                     <div class="float-right">
-                        
+
                     </div>
                 </div>
             </div>
 
         </div>
     </div>
-
 @endsection
-

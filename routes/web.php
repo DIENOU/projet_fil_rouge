@@ -47,39 +47,48 @@ Auth::routes();
 Route::resource('clients', App\Http\Controllers\ClientController::class)->middleware('auth');
 
 
-Route::resource('fournisseurs', App\Http\Controllers\FournisseurController::class);
+Route::resource('fournisseurs', App\Http\Controllers\FournisseurController::class)->middleware('auth');
 
 
-Route::resource('inventaires', App\Http\Controllers\InventaireController::class);
+Route::resource('inventaires', App\Http\Controllers\InventaireController::class)->middleware('auth');
 
 
-Route::resource('unites', App\Http\Controllers\UniteController::class);
+Route::resource('unites', App\Http\Controllers\UniteController::class)->middleware('auth');
 
 
-Route::resource('produits', App\Http\Controllers\ProduitController::class);
+Route::resource('produits', App\Http\Controllers\ProduitController::class)->middleware('auth');
 
 
-Route::resource('inventaireLignes', App\Http\Controllers\InventaireLigneController::class);
+Route::resource('inventaireLignes', App\Http\Controllers\InventaireLigneController::class)->middleware('auth');
 
 
-Route::resource('entreeStocks', App\Http\Controllers\EntreeStockController::class);
+Route::resource('entreeStocks', App\Http\Controllers\EntreeStockController::class)->middleware('auth');
 
 
-Route::resource('bonLivraisons', App\Http\Controllers\BonLivraisonController::class);
+Route::resource('bonLivraisons', App\Http\Controllers\BonLivraisonController::class)->middleware('auth');
 
 
-Route::resource('sortieStocks', App\Http\Controllers\SortieStockController::class);
+Route::resource('sortieStocks', App\Http\Controllers\SortieStockController::class)->middleware('auth');
 
 
 
 
-Route::resource('inventaireLignes', App\Http\Controllers\InventaireLigneController::class);
+Route::resource('inventaireLignes', App\Http\Controllers\InventaireLigneController::class)->middleware('auth');
 
 
-Route::resource('entreeStocks', App\Http\Controllers\EntreeStockController::class);
+Route::resource('entreeStocks', App\Http\Controllers\EntreeStockController::class)->middleware('auth');
 
 
-Route::resource('bonLivraisons', App\Http\Controllers\BonLivraisonController::class);
+Route::resource('bonLivraisons', App\Http\Controllers\BonLivraisonController::class)->middleware('auth');
 
 
-Route::resource('sortieStocks', App\Http\Controllers\SortieStockController::class);
+Route::resource('sortieStocks', App\Http\Controllers\SortieStockController::class)->middleware('auth');
+
+
+Route::resource('users', App\Http\Controllers\UserController::class)->middleware('auth');
+
+
+Route::resource('permissions', App\Http\Controllers\PermissionController::class)->middleware('auth');
+
+
+Route::resource('roles', App\Http\Controllers\RoleController::class)->middleware('auth');

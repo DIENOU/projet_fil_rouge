@@ -26,7 +26,7 @@ class SortieStock extends Model
     use HasFactory;
 
     public $table = 'sortie_stocks';
-    
+
 
     protected $dates = ['deleted_at'];
 
@@ -66,17 +66,24 @@ class SortieStock extends Model
         'bon_livraison_id' => 'required',
         'produit_id' => 'required',
         'quantite' => 'required',
-        'prix_unitaire' => 'required',
-        'quantite_livree' => 'required',
+        'prix_unitaire' => 'nullable',
+        'quantite_livree' => 'nullable',
         'cree_par' => 'nullable',
         'modifie_par' => 'nullable'
     ];
 
-    public function creepar() {
+    public function creepar()
+    {
         return $this->belongsTo(User::class, 'cree_par', 'id');
     }
 
-    public function modifiePar() {
+    public function modifiePar()
+    {
         return $this->belongsTo(User::class, 'modifie_par', 'id');
+    }
+
+    public function bon()
+    {
+        return $this->belongsTo(BonLivraison::class);
     }
 }

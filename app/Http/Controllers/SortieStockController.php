@@ -9,6 +9,8 @@ use App\Http\Requests\UpdateSortieStockRequest;
 use App\Repositories\SortieStockRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
+use App\Models\BonLivraison;
+use App\Models\Produit;
 use Response;
 use App\Models\SortieStock;
 
@@ -41,7 +43,10 @@ class SortieStockController extends AppBaseController
      */
     public function create()
     {
-        return view('sortie_stocks.create');
+        $produits = Produit::select('id', 'code_produit', 'designation', 'quantite')->get();
+        $bonLivraisons = BonLivraison::all();
+
+        return view('sortie_stocks.create', compact('produits', 'bonLivraisons'));
     }
 
     /**
@@ -54,10 +59,17 @@ class SortieStockController extends AppBaseController
     public function store(CreateSortieStockRequest $request)
     {
         $input = $request->all();
+
+        $produit = Produit::findOrFail($input['produit_id']);
+        $input['prix_unitaire'] = $produit->prix_unitaire;
+        $input['quantite_livree'] = $input['quantite'];
         // Ajouter l'utilisateur qui a créé la sortiestock
         $input['cree_par'] = Auth()->id();
 
         $sortieStock = $this->sortieStockRepository->create($input);
+
+        $produit->quantite = $produit->quantite - $sortieStock->quantite;
+        $produit->save();
 
         Flash::success('Sortie Stock saved successfully.');
 
@@ -101,7 +113,13 @@ class SortieStockController extends AppBaseController
             return redirect(route('sortieStocks.index'));
         }
 
-        return view('sortie_stocks.edit')->with('sortieStock', $sortieStock);
+        $produits = Produit::select('id', 'code_produit', 'designation', 'quantite')->get();
+        $bonLivraisons = BonLivraison::all();
+
+        return view('sortie_stocks.edit')
+            ->with('sortieStock', $sortieStock)
+            ->with('produits', $produits)
+            ->with('bonLivraisons', $bonLivraisons);
     }
 
     /**
@@ -125,7 +143,20 @@ class SortieStockController extends AppBaseController
         $input = $request->all();
         $input['modifie_par'] = Auth()->id();
 
+        $quantiteAncien = $sortieStock->quantite;
+        $produitAncien = Produit::findOrFail($sortieStock->produit_id);
+        $produitNouveau = Produit::findOrFail($input['produit_id']);
+
+        $input['prix_unitaire'] = $produitNouveau->prix_unitaire;
+        $input['quantite_livree'] = $input['quantite'];
+
         $sortieStock = $this->sortieStockRepository->update($input, $id);
+
+        // Gestion des quantités du produit
+        $produitAncien->quantite  = $produitAncien->quantite + $quantiteAncien;
+        $produitAncien->save();
+        $produitNouveau->quantite  = $produitNouveau->quantite - $sortieStock->quantite;
+        $produitNouveau->save();
 
         Flash::success('Sortie Stock updated successfully.');
 

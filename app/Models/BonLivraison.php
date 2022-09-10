@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\CreeParFactory;
 use Illuminate\Database\Eloquent\Factories\ModifieParFactory;
+
 /**
  * Class BonLivraison
  * @package App\Models
@@ -26,7 +27,7 @@ class BonLivraison extends Model
     use HasFactory;
 
     public $table = 'bon_livraisons';
-    
+
 
     protected $dates = ['deleted_at'];
 
@@ -64,16 +65,17 @@ class BonLivraison extends Model
         'numero_bon_livraison' => 'required|max:25',
         'client_id' => 'required',
         'etat' => 'required|max:25',
-        'projet' => 'required|max:250',
+        'projet' => 'nullable|max:250',
         'cree_par' => 'nullable',
         'modifie_par' => 'nullable'
     ];
-    public function creepar() {
+    public function creepar()
+    {
         return $this->belongsTo(User::class, 'cree_par', 'id');
     }
 
-    public function modifiePar() {
+    public function modifiePar()
+    {
         return $this->belongsTo(User::class, 'modifie_par', 'id');
     }
-    
 }
