@@ -120,10 +120,10 @@ class SortieStockController extends AppBaseController
             Flash::error('Sortie Stock not found');
 
             return redirect(route('sortieStocks.index'));
-            // Enregistrer la personne qui a modifie la sortiestock
-         $input = $request->all();
-         $input['modifie_par'] = Auth()->id();
         }
+        // Enregistrer la personne qui a modifie la sortiestock
+        $input = $request->all();
+        $input['modifie_par'] = Auth()->id();
 
         $sortieStock = $this->sortieStockRepository->update($input, $id);
 

@@ -120,12 +120,11 @@ class BonLivraisonController extends AppBaseController
             Flash::error('Bon Livraison not found');
 
             return redirect(route('bonLivraisons.index'));
-        
         }
- // Enregistrer la personne qui a modifié le bonlivraison
-        
- $input['modifie_par'] = Auth()->id();
-        $bonLivraison = $this->bonLivraisonRepository->update($inpit, $id);
+        // Enregistrer la personne qui a modifié le bonlivraison
+        $input = $request->all();
+        $input['modifie_par'] = Auth()->id();
+        $bonLivraison = $this->bonLivraisonRepository->update($input, $id);
 
         Flash::success('Bon Livraison updated successfully.');
 

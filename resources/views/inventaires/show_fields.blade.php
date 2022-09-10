@@ -13,7 +13,7 @@
 <!-- Modifie Par Field -->
 <div class="col-sm-12">
     {!! Form::label('modifie_par', 'Modifie Par:') !!}
-    <p>{{ optional($inventaire->modifie_par)->name }}</p>
+    <p>{{ optional($inventaire->modifiePar)->name }}</p>
 </div>
 
 <!-- Created At Field -->
@@ -27,4 +27,3 @@
     {!! Form::label('updated_at', 'Updated At:') !!}
     <p>{{ $inventaire->updated_at }}</p>
 </div>
-

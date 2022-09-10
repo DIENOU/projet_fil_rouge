@@ -19,13 +19,13 @@
 <!-- Cree Par Field -->
 <div class="col-sm-12">
     {!! Form::label('cree_par', 'Cree Par:') !!}
-    <p>{{ $unite->cree_par }}</p>
+    <p>{{ optional($unite->creepar)->name }}</p>
 </div>
 
 <!-- Modifie Par Field -->
 <div class="col-sm-12">
     {!! Form::label('modifie_par', 'Modifie Par:') !!}
-    <p>{{ $unite->modifie_par }}</p>
+    <p>{{ optional($unite->modifiePar)->name }}</p>
 </div>
 
 <!-- Created At Field -->
@@ -39,4 +39,3 @@
     {!! Form::label('updated_at', 'Updated At:') !!}
     <p>{{ $unite->updated_at }}</p>
 </div>
-

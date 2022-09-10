@@ -31,13 +31,13 @@
 <!-- Cree Par Field -->
 <div class="col-sm-12">
     {!! Form::label('cree_par', 'Cree Par:') !!}
-    <p>{{ $entreeStock->cree_par }}</p>
+    <p>{{ optional($entreeStock->creepar)->name }}</p>
 </div>
 
 <!-- Modifie Par Field -->
 <div class="col-sm-12">
     {!! Form::label('modifie_par', 'Modifie Par:') !!}
-    <p>{{ $entreeStock->modifie_par }}</p>
+    <p>{{ optional($entreeStock->modifiePar)->name }}</p>
 </div>
 
 <!-- Created At Field -->
@@ -51,4 +51,3 @@
     {!! Form::label('updated_at', 'Updated At:') !!}
     <p>{{ $entreeStock->updated_at }}</p>
 </div>
-

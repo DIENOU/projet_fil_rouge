@@ -55,7 +55,7 @@ class UniteController extends AppBaseController
     {
         $input = $request->all();
 
- // Ajouter l'utilisateur qui a créé l'unite
+        // Ajouter l'utilisateur qui a créé l'unite
         $input['cree_par'] = Auth()->id();
 
         $unite = $this->uniteRepository->create($input);
@@ -123,9 +123,9 @@ class UniteController extends AppBaseController
             return redirect(route('unites.index'));
         }
 
-         // Enregistrer la personne qui a modifié l'unite
-         $input = $request->all();
-         $input['modifie_par'] = Auth()->id();
+        // Enregistrer la personne qui a modifié l'unite
+        $input = $request->all();
+        $input['modifie_par'] = Auth()->id();
 
         $unite = $this->uniteRepository->update($input, $id);
 

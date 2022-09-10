@@ -54,9 +54,8 @@ class EntreeStockController extends AppBaseController
     public function store(CreateEntreeStockRequest $request)
     {
         $input = $request->all();
-          // Ajouter l'utilisateur qui a créé l'entreestock
-     $input['cree_par'] = Auth()->id();
-
+        // Ajouter l'utilisateur qui a créé l'entreestock
+        $input['cree_par'] = Auth()->id();
 
         $entreeStock = $this->entreeStockRepository->create($input);
 
@@ -122,9 +121,9 @@ class EntreeStockController extends AppBaseController
 
             return redirect(route('entreeStocks.index'));
         }
-         // Enregistrer la personne qui a modifié l'entreesttock
-        
-         $input['modifie_par'] = Auth()->id();
+        // Enregistrer la personne qui a modifié l'entreesttock
+        $input = $request->all();
+        $input['modifie_par'] = Auth()->id();
 
         $entreeStock = $this->entreeStockRepository->update($input, $id);
 

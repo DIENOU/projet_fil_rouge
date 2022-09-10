@@ -55,8 +55,8 @@ class InventaireController extends AppBaseController
     {
         $input = $request->all();
 
-          // Ajouter l'utilisateur qui a créé l'inventaire
-          $input['cree_par'] = Auth()->id();
+        // Ajouter l'utilisateur qui a créé l'inventaire
+        $input['cree_par'] = Auth()->id();
 
         $inventaire = $this->inventaireRepository->create($input);
 
@@ -122,9 +122,9 @@ class InventaireController extends AppBaseController
 
             return redirect(route('inventaires.index'));
         }
-       // Enregistrer la personne qui a modifié l'inventaire
-           $input = $request->all();
-                   $input['modifie_par'] = Auth()->id();
+        // Enregistrer la personne qui a modifié l'inventaire
+        $input = $request->all();
+        $input['modifie_par'] = Auth()->id();
 
         $inventaire = $this->inventaireRepository->update($input, $id);
 

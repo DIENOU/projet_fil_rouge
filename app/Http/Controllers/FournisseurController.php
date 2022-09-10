@@ -50,9 +50,9 @@ class FournisseurController extends AppBaseController
      * @param CreateFournisseurRequest $request
      *
      * @return Response
-     * 
+     *
      */
-    
+
     public function store(CreateFournisseurRequest $request)
     {
         $input = $request->all();
@@ -124,10 +124,9 @@ class FournisseurController extends AppBaseController
 
             return redirect(route('fournisseurs.index'));
         }
-           // Enregistrer la personne qui a modifié le  fournisseur
-           $input = $request->all();
-           $input['modifie_par'] = Auth()->id();
-   
+        // Enregistrer la personne qui a modifié le  fournisseur
+        $input = $request->all();
+        $input['modifie_par'] = Auth()->id();
 
         $fournisseur = $this->fournisseurRepository->update($input, $id);
 

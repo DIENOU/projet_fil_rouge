@@ -31,7 +31,7 @@
 <!-- Modifie Par Field -->
 <div class="col-sm-12">
     {!! Form::label('modifie_par', 'Modifie Par:') !!}
-    <p>{{  optional($bonLivraison->modifiepar)->name}}</p>
+    <p>{{ optional($bonLivraison->modifiePar)->name }}</p>
 </div>
 
 <!-- Created At Field -->
@@ -45,4 +45,3 @@
     {!! Form::label('updated_at', 'Updated At:') !!}
     <p>{{ $bonLivraison->updated_at }}</p>
 </div>
-

@@ -11,6 +11,7 @@ use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
 use App\Models\InventaireLigne;
+
 class InventaireLigneController extends AppBaseController
 {
     /** @var InventaireLigneRepository $inventaireLigneRepository*/
@@ -52,9 +53,9 @@ class InventaireLigneController extends AppBaseController
      */
     public function store(CreateInventaireLigneRequest $request)
     {
-         // Ajouter l'utilisateur qui a créé l'inventaireligne
-     $input['cree_par'] = Auth()->id();
+        // Ajouter l'utilisateur qui a créé l'inventaireligne
         $input = $request->all();
+        $input['cree_par'] = Auth()->id();
 
         $inventaireLigne = $this->inventaireLigneRepository->create($input);
 
@@ -120,9 +121,9 @@ class InventaireLigneController extends AppBaseController
 
             return redirect(route('inventaireLignes.index'));
         }
-// Enregistrer la personne qui a modifié l'inventaireligne
-          $input = $request->all();
-         $input['modifie_par'] = Auth()->id();
+        // Enregistrer la personne qui a modifié l'inventaireligne
+        $input = $request->all();
+        $input['modifie_par'] = Auth()->id();
         $inventaireLigne = $this->inventaireLigneRepository->update($input, $id);
 
         Flash::success('Inventaire Ligne updated successfully.');
